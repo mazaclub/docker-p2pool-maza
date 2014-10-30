@@ -1,5 +1,6 @@
 USER=mazaclub
 PROJECT=mazabase
+P2POOLIMG=${USER}/p2pool-mazacoin
 P2POOL=${USER}/${PROJECT}-p2pool-maza
 P2POOLWEB=${USER}/${PROJECT}-p2poolweb
 DAEMON=${USER}/mazacoin-new
@@ -14,6 +15,7 @@ P2POOL_INSIDE=14476
 P2POOL_INSIDE=14476
 NGINX_OUTSIDE=34555
 NGINX_INSIDE=80
+
 docker images |awk '{print $1":"$2}' |grep ${BLOCKS} || docker pull ${BLOCKS} 
 docker images |awk '{print $1":"$2}' |grep ${DAEMON} || docker pull ${DAEMON}
 docker images |awk '{print $1":"$2}' |grep ${WALLET} || docker pull ${WALLET}
@@ -41,6 +43,17 @@ if [ "${avail}X" = "X" ] ; then
    sed -i 's/PROJECT\=.*/PROJECT\='${PROJECT}'/g' run-mazacoin-prebuilt.sh
    make all
 fi
+p2pavail=`docker images |awk '{print $1":"$2}' |grep ${P2POOL}`
+echo "${p2pavail}"
+
+if [ "${p2pavail}X" = "X" ] ;then
+   docker pull ${P2POOLIMG} 
+#   if [ "${1}" = "-testnet" ] ; then
+#      docker tag ${P2POOLIMG} ${USER}/testnet-p2pool-maza
+   docker images |awk '{print $1":"$2}' |grep ${P2POOL} || docker tag ${P2POOLIMG}  ${P2POOL}
+#   fi
+fi
+
 
 echo "`date` Starting ${PROJECT}_mazablocks"
 mb=`docker ps -a|awk '{print $NF}'  |grep ${PROJECT}_mazablocks`
