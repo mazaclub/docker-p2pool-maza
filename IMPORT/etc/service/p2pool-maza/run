@@ -3,7 +3,13 @@ set -e
 cd /p2pool-maza
 env > /p2pool-maza/env
 chown -R p2pool.maza /p2pool-maza/env
+if [ ! -d /home/p2pool/data ] ; then 
+   mkdir /home/p2pool/data 
+fi
 chown -R p2pool.maza /home/p2pool/data
+if [ ! -d /home/p2pool/p2pool-web ] ; then 
+   mkdir /home/p2pool/p2pool-web
+fi
 chown -R p2pool.maza /home/p2pool/p2pool-web
 if [ ! -h /home/p2pool/.mazacoin ] ; then
    ln -sv /home/maza/.mazacoin /home/p2pool 

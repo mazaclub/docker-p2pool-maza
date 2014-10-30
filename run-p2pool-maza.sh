@@ -14,6 +14,9 @@ P2POOL_INSIDE=14476
 P2POOL_INSIDE=14476
 NGINX_OUTSIDE=34555
 NGINX_INSIDE=80
+docker images |awk '{print $1":"$2}' |grep ${BLOCKS} || docker pull ${BLOCKS} 
+docker images |awk '{print $1":"$2}' |grep ${DAEMON} || docker pull ${DAEMON}
+docker images |awk '{print $1":"$2}' |grep ${WALLET} || docker pull ${WALLET}
 
 if [ "${1}" = "-testnet" ] ; then
   PROJECT=testnet
@@ -23,16 +26,13 @@ if [ "${1}" = "-testnet" ] ; then
   WORKER_INSIDE=13377
   WORKER_OUTSIDE=13377
   P2POOL_INSIDE=13376
-  P2POOL_INSIDE=13376
+  P2POOL_OUTSIDE=13376
   BLOCKS="${USER}/${PROJECT}-mazablocks:empty"
+  docker tag ${USER}/mazablocks:empty ${BLOCKS}
   P2POOL=${USER}/${PROJECT}-p2pool-maza
   P2POOLWEB=${USER}/${PROJECT}-p2poolweb
 fi
 
-
-docker images |awk '{print $1":"$2}' |grep ${BLOCKS} || docker pull ${BLOCKS} 
-docker images |awk '{print $1":"$2}' |grep ${DAEMON} || docker pull ${DAEMON}
-docker images |awk '{print $1":"$2}' |grep ${WALLET} || docker pull ${WALLET}
 
 avail=`docker images |awk '{print $1":"$2}' |grep ${DAEMON}`
 if [ "${avail}X" = "X" ] ; then
