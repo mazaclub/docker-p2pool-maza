@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+cd /p2pool-maza
+env > /p2pool-maza/env
+chown -R p2pool.maza /p2pool-maza/env
+chown -R p2pool.maza /home/p2pool/data
+chown -R p2pool.maza /home/p2pool/p2pool-web
+if [ ! -h /home/p2pool/.mazacoin ] ; then
+   ln -sv /home/maza/.mazacoin /home/p2pool 
+fi
+if [ -f /p2pool-maza/.firstrun ] 
+   # wait for mazacoind to set a new rpcpassword and then start
+   then sleep 120
+   rm /p2pool-maza/.firstrun
+fi
+exec su p2pool -c ./start_p2pool_maza.sh
