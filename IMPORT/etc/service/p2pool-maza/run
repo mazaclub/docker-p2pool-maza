@@ -19,4 +19,5 @@ if [ -f /p2pool-maza/.firstrun ]
    then sleep 120
    rm /p2pool-maza/.firstrun
 fi
+test -f /home/maza/.mazacoin/mazacoin.conf || cp /home/p2pool/rpcpass.conf /home/maza/.mazacoin.conf
 exec su p2pool -c ./start_p2pool_maza.sh
